@@ -18,10 +18,10 @@
 
     <!-- Styles -->
     {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+    @yield('styles')
 
 
 </head>
@@ -79,57 +79,82 @@
         </nav>
 
         <main class="py-4">
-           <div class="container">
-               <div class="row">
-                   <div class="col-lg-4">
-                        <ul class="list-group">
-                            <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    @if(Auth::check())
+                        <div class="col-lg-4">
+                            <ul class="list-group">
+                                <li class="list-group-item">
                                     <a href="{{ route('home') }}">Home</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="{{ route('categories') }}">Categories</a>
-                            </li>
+                                </li>
 
-                            <li class="list-group-item">
-                                    <a href="{{ route('category.create') }}">Create new Category</a>
-                            </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('categories') }}">Categories</a>
+                                </li>
 
-                            <li class="list-group-item">
-                                <a href="{{ route('post.create') }}">Create new post</a>
-                            </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('tags') }}">Tags</a>
+                                </li>
 
-                            <li class="list-group-item">
-                                <a href="{{ route('posts') }}">All post</a>
-                            </li>
+                                @if(Auth::user()->admin)
+                                    <li class="list-group-item">
+                                        <a href="{{ route('users') }}">Users</a>
+                                    </li>
 
-                            <li class="list-group-item">
-                                <a href="{{ route('posts.trashed') }}">All Trashed post</a>
-                            </li>
+                                    <li class="list-group-item">
+                                        <a href="{{ route('user.create') }}">New user</a>
+                                    </li>
+                                @endif
 
-                            <li class="list-group-item">
-                                <a href="{{ route('tags') }}">Tags</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="{{ route('tag.create') }}">Create Tag</a>
-                            </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('user.profile') }}">My profile</a>
+                                </li>
 
+                                <li class="list-group-item">
+                                    <a href="{{ route('tag.create') }}">Create tag</a>
+                                </li>
 
-                        </ul>
-                   </div>
-                   <div class="col-lg-8">
-                       @yield('content')
-                   </div>
-               </div>
-           </div>
+                                <li class="list-group-item">
+                                    <a href="{{ route('posts') }}">All posts</a>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <a href="{{ route('posts.trashed') }}">All trashed posts</a>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <a href="{{ route('category.create') }}">Create new category</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('post.create') }}">Create new post</a>
+                                </li>
+
+                                @if(Auth::user()->admin)
+                                    <li class="list-group-item">
+                                        <a href="{{ route('settings') }}">Settings</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="col-lg-8">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     {{-- js --}}
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
 
 
-<script src="{{ asset('js/toastr.min.js') }}"></script>
 <script>
         @if(Session::has('success'))
             toastr.success("{{ Session::get('success') }}")
@@ -140,8 +165,10 @@
         @if(Session::has('error'))
             toastr.error("{{ Session::get('error') }}")
         @endif
+
 </script>
 
 
+    @yield('scripts')
 </body>
 </html>
